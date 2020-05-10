@@ -4,11 +4,14 @@ import {BrowserRouter as Router,
     Route} from 'react-router-dom';
 import Home from './cores/Home';
 import Signup from './user/Signup';
+import Signin from './user/Signin';
+import Menu from './cores/Menu';
 
 class MainRouter extends Component {
     render() {
         return (
             <Router>
+                <Menu />
                 <Switch>
                     <Route exact path="/signup">
                         <Signup />
@@ -16,6 +19,10 @@ class MainRouter extends Component {
 
                     <Route exact path="/">
                         <Home />
+                    </Route>
+
+                    <Route exact path="/signin">
+                        <Signin />
                     </Route>
                     
                 </Switch>

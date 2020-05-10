@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
+import {Redirect} from 'react-router-dom';
 
-class Signup extends Component {
+class Signin extends Component {
     constructor(props){
         super(props);
         this.state={
-            name:"",
             email:"",
             password:"",
             error:"",
-            open:false
+            redirect:false,
+            loading:false
         }
     }
 
@@ -20,28 +21,32 @@ class Signup extends Component {
         });
     }
 
+    authenticate(jwt,next){
+        if(typeof window !=='undefined'){
+            localStorage.setItem("jwt",JSON.stringify(jwt));
+            next();
+        }
+    }
+
     handleClick=event=>{
         event.preventDefault();
-        const {name,email,password}=this.state;
-        const user={name,email,password};
+        this.setState({loading:true});
+        const {email,password}=this.state;
+        const user={email,password};
         
-        this.signup(user)
+        this.signin(user)
             .then(result=>{
                 if(result.error){
-                    this.setState({error:result.error})
+                    this.setState({error:result.error,loading:false})
                 }else{
-                    this.setState({
-                        name:"",
-                        email:"",
-                        password:"",
-                        error:"",
-                        open:true
-                    });
+                    this.authenticate(result,()=>{
+                        this.setState({redirect:true});
+                    })
                 }
             })
         
     }
-    signup=user=>{
+    signin=user=>{
         const options={
             method:"POST",
             headers:{
@@ -50,17 +55,13 @@ class Signup extends Component {
             },
             body:JSON.stringify(user)
         }
-        return fetch("http://localhost:5050/signup",options)
+        return fetch("http://localhost:5050/signin",options)
             .then(res=> res.json())
             .catch(err=>console.log(err));
     }
 
-    signupForm=(name,email,password)=>{
+    signinForm=(email,password)=>{
         return (<form>
-            <div className="form-group">
-                <label  className="text-muted">Name</label>
-                <input onChange={(event)=>this.handleChange(event)} name="name" type="text"  className="form-control" value={name} />
-            </div>
             <div className="form-group">
                 <label  className="text-muted">Email</label>
                 <input onChange={(event)=>this.handleChange(event)} name="email" type="email"  className="form-control" value={email} />
@@ -69,22 +70,26 @@ class Signup extends Component {
                 <label  className="text-muted">Password</label>
                 <input onChange={(event)=>this.handleChange(event)} name="password" type="password"  className="form-control" value={password} />
             </div>
-            <button onClick={(event)=>this.handleClick(event)} className="btn btn-primary btn-raised mt-3">Submit</button>
+            <button onClick={(event)=>this.handleClick(event)} className="btn btn-info btn-raised mt-3">Submit</button>
         </form>
         )
     }
 
     render() {
-        const {name,email,password,error,open}=this.state;
+        const {email,password,error,redirect,loading}=this.state;
+        if(redirect){
+            return <Redirect to='/' />
+        }
         return (
             <div className="container">
-                <h2 className="mt-5 mb-5 ">Sign up</h2>
+                <h2 className="mt-5 mb-5 ">Sign in</h2>
+                {loading? <div className="text-center">Loading...</div>:""}
                 <div className="alert alert-warning" style={{display:error ? "" : "none"}}>{error}</div>
-                <div className="alert alert-success" style={{display:open ? "" : "none"}}>Sign up successfully. Please sign in</div>
-                {this.signupForm(name,email,password)}
+                {this.signinForm(email,password)}
+                
             </div>
         );
     }
 }
 
-export default Signup;
+export default Signin;
