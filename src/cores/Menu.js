@@ -21,6 +21,9 @@ class Menu extends Component {
                     <li className="nav-item">
                         <Link className="nav-link" style={this.isActive(history,'/')} to='/'>Home</Link>
                     </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" style={this.isActive(history,'/users')} to='/users'>Users</Link>
+                    </li>
                     {!isAuthenticated()&&(
                         <>
                         <li className="nav-item">
@@ -33,16 +36,17 @@ class Menu extends Component {
                     )}
                     {isAuthenticated() && (
                         <>
-                            <li className="nav-item">
-                            <a className="nav-link" style={this.isActive(history,'/signup'),{cursor:"pointer",color:"#fff"}} onClick={()=>signout(()=>{
+                            <li className="nav-item ml-auto">
+                                <Link className="nav-link"  to={`/user/${isAuthenticated().user._id}`}
+                                style={this.isActive(history,`/user/${isAuthenticated().user._id}`)}>{`${isAuthenticated().user.name}'s Profile`}</Link>
+                            </li>
+                            <li className="nav-item ml-auto">
+                            <span className="nav-link " style={this.isActive(history,'/signup'),{cursor:"pointer",color:"#fff"}} onClick={()=>signout(()=>{
                                 history.push('/')
-                            })}>Sign out</a>
+                            })}>Sign out</span>
                             </li>
                             
-                            <li className="nav-item ml-auto">
-                            <div className="nav-link" 
-                            >{"Hello "+isAuthenticated().user.name}</div>
-                            </li>
+                            
                         </>
                     )}
                 </ul>
