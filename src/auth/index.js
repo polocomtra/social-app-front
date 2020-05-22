@@ -1,3 +1,5 @@
+
+//xác thực ở phía Client 
 export const authenticate =(jwt,next)=>{
     if(typeof window !=='undefined'){
         localStorage.setItem("jwt",JSON.stringify(jwt));
@@ -18,6 +20,8 @@ export const signin=user=>{
         .then(res=> res.json())
         .catch(err=>console.log(err));
 }
+
+//post một form đăng kí lên server để  server tạo mới user rồi add vào database
 
 export const signup=user=>{
     const options={
@@ -49,6 +53,7 @@ export const signout=(next)=>{
 }
 
 export const isAuthenticated=()=>{
+    //nhớ phải kiểm tra xem global Window có available không
     if(typeof Window =="undefined"){
         return false;
     }

@@ -99,7 +99,6 @@ class EditUser extends Component {
     }
     
     update(id,token,user){
-        console.log("USER DATA UPDATE: ",user);
         return fetch(`http://localhost:5050/user/${id}`,{
             method: "PUT",
             headers:{

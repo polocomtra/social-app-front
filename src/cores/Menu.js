@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import {Link,withRouter} from 'react-router-dom'
 import {isAuthenticated,signout} from '../auth';
 class Menu extends Component {
-    isActive=(history,path)=>{
+    //click menu nào thì ở đó được active lên
+
+    isActive=(history,path)=> {
+        //history là một Dom, nhớ câu lệnh này để active nhé
+
         if(history.location.pathname===path){
             return {color:"#ff9900"}
         }
@@ -14,7 +18,7 @@ class Menu extends Component {
 
     
     render() {
-        const {history}=this.props;
+        const { history }=this.props;
         return (
             <div>
                 <ul className="nav nav-tabs bg-primary">
@@ -24,16 +28,18 @@ class Menu extends Component {
                     <li className="nav-item">
                         <Link className="nav-link" style={this.isActive(history,'/users')} to='/users'>Users</Link>
                     </li>
+
                     {!isAuthenticated()&&(
                         <>
-                        <li className="nav-item">
-                            <Link className="nav-link" style={this.isActive(history,'/signin')} to='/signin'>Sign In</Link> 
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" style={this.isActive(history,'/signup')} to='/signup'>Sign up</Link>
-                        </li>
+                            <li className="nav-item">
+                                <Link className="nav-link" style={this.isActive(history,'/signin')} to='/signin'>Sign In</Link> 
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link" style={this.isActive(history,'/signup')} to='/signup'>Sign up</Link>
+                            </li>
                         </>
                     )}
+
                     {isAuthenticated() && (
                         <>
                             <li className="nav-item ml-auto">
@@ -45,7 +51,6 @@ class Menu extends Component {
                                 history.push('/')
                             })}>Sign out</span>
                             </li>
-                            
                             
                         </>
                     )}

@@ -3,12 +3,14 @@ import userAvatar from '../images/userAvatar.png';
 import {Link} from 'react-router-dom';
 
 class Users extends Component {
+
     constructor(props){
         super(props);
         this.state={
             users:[]
         }
     }
+
     listUsers=()=>{
         return fetch("http://localhost:5050/users",{
             method:"GET"
@@ -18,6 +20,8 @@ class Users extends Component {
             console.log(error);
         })
     }
+    //trước khi component được sinh ra thì list user đã có rồi
+
     componentDidMount() {
         this.listUsers().then(data=>{
             if(data.error){
@@ -28,6 +32,7 @@ class Users extends Component {
             }
         })
     }
+    
     renderUsers(users){
         
         return <div className="row">

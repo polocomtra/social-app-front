@@ -13,6 +13,7 @@ class Profile extends Component {
             redirectToSignin:false
         }
     }
+    
     getUserInfo(userId){
         return fetch(`http://localhost:5050/user/${userId}`,{
             method: "GET",
